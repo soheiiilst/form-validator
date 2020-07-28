@@ -4,7 +4,7 @@ const email = document.getElementById('email');
 const password = document.getElementById('password');
 const password2 = document.getElementById('password2');
 
-// SHOW INPUT ERROR MESSAGE
+// ======================== SHOW INPUT ERROR MESSAGE
 const showError = (input, message) => {
   const formControl = input.parentElement;
   formControl.className = 'form-control error';
@@ -12,32 +12,72 @@ const showError = (input, message) => {
   small.innerText = message;
 };
 
-// SHOW SUCCESS OUTLINE
+// ======================== SHOW SUCCESS OUTLINE
 const showSuccess = input => {
   const formControl = input.parentElement;
   formControl.className = 'form-control success';
 };
 
-// CHECK EMPTY
-const checkEmpty = input => {
-  let inputName =
-    input.id.toString()[0].toUpperCase() + input.id.toString().slice(1);
-  if (input.id.toString() === 'password2') {
-    inputName = 'Confirm password';
-  }
-  if (input.value === '') {
-    showError(input, `${inputName} is required!`);
+// ======================== CHECK REQUIRED
+const checkRequired = inputArray => {
+  inputArray.forEach(input => {
+    if (input.value.trim() === '') {
+      showError(input, `${getFieldName(input)} is required!`);
+    } else {
+      showSuccess(input);
+    }
+  });
+};
+
+// ======================== CHECK INPUT LENGTH
+const checkLength = (input, min, max) => {
+  if (input.value.length < min) {
+    showError(
+      input,
+      `${getFieldName(input)} must be at least ${min} characters!`
+    );
+  } else if (input.value.length > max) {
+    showError(
+      input,
+      `${getFieldName(input)} must be less than ${max} characters!`
+    );
   } else {
     showSuccess(input);
   }
 };
 
-// EVENT LISTENER
+// ======================== CHECK EMAIL IS VALID
+const checkEmail = email => {
+  const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+  if (re.test(String(email.value).toLowerCase())) {
+    showSuccess(email);
+  } else {
+    showError(email, 'Email is not valid!');
+  }
+};
+
+// ======================== CHECK PASSWORDS MATCH
+const checkPasswordsMatch = (input1, input2) => {
+  if (input1.value !== input2.value) {
+    showError(input2, 'Passwords do not match!');
+  }
+};
+
+// ======================== GET FIELDNAME
+const getFieldName = input => {
+  if (input.id === 'password2') {
+    return 'Confirm password';
+  }
+  return input.id[0].toUpperCase() + input.id.slice(1);
+};
+
+// ======================== EVENT LISTENER
 form.addEventListener('submit', e => {
   e.preventDefault();
-  console.log(e);
-  checkEmpty(username);
-  checkEmpty(email);
-  checkEmpty(password);
-  checkEmpty(password2);
+
+  checkRequired([username, email, password, password2]);
+  checkLength(username, 3, 15);
+  checkLength(password, 6, 25);
+  checkEmail(email);
+  checkPasswordsMatch(password, password2);
 });
