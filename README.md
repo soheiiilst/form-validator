@@ -3,7 +3,7 @@
 ### Will validate your input. 
 #### ------------------------
 <h2 align="center">
-  <a href="http://uupload.ir/view/tn7c_form-validator.png" target="_blank"><img src="http://uupload.ir/files/tn7c_form-validator_thumb.png" border="0" alt="form validator" /></a>
+  <a href="http://uupload.ir/files/tn7c_form-validator.png" target="_blank"><img src="http://uupload.ir/files/tn7c_form-validator.png" border="0" alt="form validator" /></a>
   <br>
 </h2>
 
